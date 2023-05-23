@@ -25,7 +25,7 @@ const user = {
 
 // eslint-disable-next-line no-undef
 beforeAll(() => {
-  server = app.listen(1337);
+  server = app.listen(8000);
 });
 
 // register
@@ -112,11 +112,8 @@ describe('POST /v1/auth/login', () => {
 
 // whoami
 describe('GET /v1/auth/whoami', () => {
-  it('should response with 200 status code', async () => {
-    // memperbarui nilai token
-    token = jwt.sign({ email: user.email }, JWT_SIGNATURE_KEY);
-
-    return request(server)
+  it('should response with 200 status code', async () => (
+    request(server)
       .get('/v1/auth/whoami')
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
@@ -130,9 +127,8 @@ describe('GET /v1/auth/whoami', () => {
             name: decodedToken.name,
           }),
         );
-      });
-  });
-
+      })
+  ));
   it('should response with 401 status code', async () => (
     request(server)
       .get('/v1/auth/whoami')
